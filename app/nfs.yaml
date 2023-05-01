@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nfs
+  namespace: argocd
+  resourceVersion: "2385675"
+  uid: 12f209f1-bd09-4a27-9665-67bc4059e65c
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: nfs-subdir-external-provisioner
+    helm:
+      parameters:
+      - name: nfs.server
+        value: 192.168.37.105
+      - name: nfs.path
+        value: /mnt/IT-Academy/nfs-data/sa2-23-23/
+      - name: storageClass.name
+        value: nfs
+    repoURL: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
+    targetRevision: 4.0.18
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
